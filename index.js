@@ -1,14 +1,13 @@
 const express = require("express");
 const { auth } = require("google-auth-library");
-const {google} = require("googleapis")
-PORT= 4747;
+const { google } = require("googleapis")
+PORT = 4747;
 const app = express();
 
 
 app.use(express.json());
 
-app.post("/testForm", async (req, res)=>{
-    
+app.post("/testForm", async (req, res) => {
 
     const auth = new google.auth.GoogleAuth({
         keyFile: "credentials.json",
@@ -16,47 +15,47 @@ app.post("/testForm", async (req, res)=>{
     })
 
     //create client instancce
-const client = await auth.getClient();
+    const client = await auth.getClient();
 
-//instance of google sheet api
+    //instance of google sheet api
 
-const googleSheets = google.sheets({version: "v4", auth: client});
+    const googleSheets = google.sheets({ version: "v4", auth: client });
 
 
-const spreadsheetId = "1ZgPvbpJhFT2kpGvIb1q3DeTPNzL848TYpMGlV5H4_4Q"
+    const spreadsheetId = "1ZgPvbpJhFT2kpGvIb1q3DeTPNzL848TYpMGlV5H4_4Q"
 
-// //get metadata
-// const metaData = await googleSheets.spreadsheets.get({
-//     auth,
-//     spreadsheetId,
-// })
+    // //get metadata
+    // const metaData = await googleSheets.spreadsheets.get({
+    //     auth,
+    //     spreadsheetId,
+    // })
 
-// //Read rows FROM sheet
+    // //Read rows FROM sheet
 
-// const getRows = await googleSheets.spreadsheets.values.get({
-//     auth,
-//     spreadsheetId,
-//     range: "Subs!A:B"
-// })
+    // const getRows = await googleSheets.spreadsheets.values.get({
+    //     auth,
+    //     spreadsheetId,
+    //     range: "Subs!A:B"
+    // })
 
-//Write rows TO sheet
-const {name, email, phone, city} = req.body;
+    //Write rows TO sheet
+    const { name, email, phone, city } = req.body;
 
-await googleSheets.spreadsheets.values.append({
-    auth,
-    spreadsheetId,
-    range:"Subs!A:B",
-    valueInputOption: "USER_ENTERED",
-    resource: {
-        values: [
-            [name, email, phone, city]
-        ],
-    }
-})
+    await googleSheets.spreadsheets.values.append({
+        auth,
+        spreadsheetId,
+        range: "Subs!A:B",
+        valueInputOption: "USER_ENTERED",
+        resource: {
+            values: [
+                [name, email, phone, city]
+            ],
+        }
+    })
 
-res.send("Response Submitted")
+    res.send("Response Submitted")
 });
 
-app.listen(PORT, (req,res)=>{
-    console.log("server running")
+app.listen(PORT, (req, res) => {
+    console.log("backend running")
 })
