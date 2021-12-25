@@ -1,13 +1,15 @@
 const express = require("express");
 const { auth } = require("google-auth-library");
 const { google } = require("googleapis")
+var cors = require('cors')
 PORT = 4747;
 const app = express();
 
+app.use(cors())
 
 app.use(express.json());
 
-app.post("/testForm", async (req, res) => {
+app.post("/subs", async (req, res) => {
 
     const auth = new google.auth.GoogleAuth({
         keyFile: "credentials.json",
